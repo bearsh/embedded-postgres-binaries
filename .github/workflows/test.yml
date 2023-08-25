@@ -1,5 +1,9 @@
 name: Checks
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - "*"
+  pull_request:
 jobs:
   linux:
     name: PostgreSQL ${{ matrix.postgres }} (Linux)

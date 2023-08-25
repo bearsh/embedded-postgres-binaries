@@ -1,0 +1,415 @@
+name: Build
+on:
+  push:
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'
+jobs:
+  debian-amd64:
+    name: Debian - amd64
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 15
+      - name: Set environment variables
+        run: |
+          echo "RELEASE_VERSION=${GITHUB_REF_NAME}" >> $GITHUB_ENV
+          echo "POSTGRES_VERSION=${GITHUB_REF_NAME%'.0'}" >> $GITHUB_ENV
+          echo "BUNDLE_DIR=debian-platforms/build/tmp/buildAmd64DebianBundle/bundle" >> $GITHUB_ENV
+      - name: Build Bundle
+        run: ./gradlew :debian-platforms:buildAmd64DebianBundle -Pversion=$RELEASE_VERSION -PpgVersion=$POSTGRES_VERSION
+      - name: Rename archive
+        run: |
+          mv ${BUNDLE_DIR}/*.txz ${BUNDLE_DIR}/embedded-postgres-binaries-linux-amd64-${RELEASE_VERSION}.txz
+      - name: Upload bundle
+        uses: actions/upload-artifact@v3
+        with:
+          name: buildAmd64DebianBundle
+          path: ${{ env.BUNDLE_DIR }}/*.txz
+  alpine-amd64:
+    name: Alpine - amd64
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 15
+      - name: Set environment variables
+        run: |
+          echo "RELEASE_VERSION=${GITHUB_REF_NAME}" >> $GITHUB_ENV
+          echo "POSTGRES_VERSION=${GITHUB_REF_NAME%'.0'}" >> $GITHUB_ENV
+          echo "BUNDLE_DIR=alpine-platforms/build/tmp/buildAmd64AlpineBundle/bundle" >> $GITHUB_ENV
+      - name: Build Bundle
+        run: ./gradlew :alpine-platforms:buildAmd64AlpineBundle -Pversion=$RELEASE_VERSION -PpgVersion=$POSTGRES_VERSION
+      - name: Rename archive
+        run: |
+          mv ${BUNDLE_DIR}/*.txz ${BUNDLE_DIR}/embedded-postgres-binaries-linux-amd64-alpine-${RELEASE_VERSION}.txz
+      - name: Upload bundle
+        uses: actions/upload-artifact@v3
+        with:
+          name: buildAmd64AlpineBundle
+          path: ${{ env.BUNDLE_DIR }}/*.txz
+  alpine-lite-amd64:
+    name: Alpine - amd64 (Lite)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 15
+      - name: Set environment variables
+        run: |
+          echo "RELEASE_VERSION=${GITHUB_REF_NAME}" >> $GITHUB_ENV
+          echo "POSTGRES_VERSION=${GITHUB_REF_NAME%'.0'}" >> $GITHUB_ENV
+          echo "BUNDLE_DIR=alpine-lite-platforms/build/tmp/buildAmd64AlpineLiteBundle/bundle" >> $GITHUB_ENV
+      - name: Build Bundle
+        run: ./gradlew :alpine-lite-platforms:buildAmd64AlpineBundle -Pversion=$RELEASE_VERSION -PpgVersion=$POSTGRES_VERSION
+      - name: Rename archive
+        run: |
+          mv ${BUNDLE_DIR}/*.txz ${BUNDLE_DIR}/embedded-postgres-binaries-linux-amd64-alpine-lite-${RELEASE_VERSION}.txz
+      - name: Upload bundle
+        uses: actions/upload-artifact@v3
+        with:
+          name: buildAmd64AlpineBundle
+          path: ${{ env.BUNDLE_DIR }}/*.txz
+  debian-arm32v7:
+    name: Debian - arm32v7
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 15
+      - name: Set environment variables
+        run: |
+          echo "RELEASE_VERSION=${GITHUB_REF_NAME}" >> $GITHUB_ENV
+          echo "POSTGRES_VERSION=${GITHUB_REF_NAME%'.0'}" >> $GITHUB_ENV
+          echo "BUNDLE_DIR=debian-platforms/build/tmp/buildArm32v7DebianBundle/bundle" >> $GITHUB_ENV
+      - name: Register QEMU
+        run: docker run --rm --privileged multiarch/qemu-user-static:register --reset
+      - name: Build Bundle
+        run: ./gradlew :debian-platforms:buildArm32v7DebianBundle -Pversion=$RELEASE_VERSION -PpgVersion=$POSTGRES_VERSION
+      - name: Rename archive
+        run: |
+          mv ${BUNDLE_DIR}/*.txz ${BUNDLE_DIR}/embedded-postgres-binaries-linux-arm32v7-${RELEASE_VERSION}.txz
+      - name: Upload bundle
+        uses: actions/upload-artifact@v3
+        with:
+          name: buildArm32v7DebianBundle
+          path: ${{ env.BUNDLE_DIR }}/*.txz
+  debian-arm64v8:
+    name: Debian - arm64v8
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 15
+      - name: Set environment variables
+        run: |
+          echo "RELEASE_VERSION=${GITHUB_REF_NAME}" >> $GITHUB_ENV
+          echo "POSTGRES_VERSION=${GITHUB_REF_NAME%'.0'}" >> $GITHUB_ENV
+          echo "BUNDLE_DIR=debian-platforms/build/tmp/buildArm64v8DebianBundle/bundle" >> $GITHUB_ENV
+      - name: Register QEMU
+        run: docker run --rm --privileged multiarch/qemu-user-static:register --reset
+      - name: Build Bundle
+        run: ./gradlew :debian-platforms:buildArm64v8DebianBundle -Pversion=$RELEASE_VERSION -PpgVersion=$POSTGRES_VERSION
+      - name: Rename archive
+        run: |
+          mv ${BUNDLE_DIR}/*.txz ${BUNDLE_DIR}/embedded-postgres-binaries-linux-arm64v8-${RELEASE_VERSION}.txz
+      - name: Upload bundle
+        uses: actions/upload-artifact@v3
+        with:
+          name: buildArm64v8DebianBundle
+          path: ${{ env.BUNDLE_DIR }}/*.txz
+  debian-ppc64le:
+    name: Debian - ppc64le
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 15
+      - name: Set environment variables
+        run: |
+          echo "RELEASE_VERSION=${GITHUB_REF_NAME}" >> $GITHUB_ENV
+          echo "POSTGRES_VERSION=${GITHUB_REF_NAME%'.0'}" >> $GITHUB_ENV
+          echo "BUNDLE_DIR=debian-platforms/build/tmp/buildPpc64leDebianBundle/bundle" >> $GITHUB_ENV
+      - name: Register QEMU
+        run: docker run --rm --privileged multiarch/qemu-user-static:register --reset
+      - name: Build Bundle
+        run: ./gradlew :debian-platforms:buildPpc64leDebianBundle -Pversion=$RELEASE_VERSION -PpgVersion=$POSTGRES_VERSION
+      - name: Rename archive
+        run: |
+          mv ${BUNDLE_DIR}/*.txz ${BUNDLE_DIR}/embedded-postgres-binaries-linux-ppc64le-${RELEASE_VERSION}.txz
+      - name: Upload bundle
+        uses: actions/upload-artifact@v3
+        with:
+          name: buildPpc64leDebianBundle
+          path: ${{ env.BUNDLE_DIR }}/*.txz
+  alpine-arm32v6:
+    name: Alpine - arm32v6
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 15
+      - name: Set environment variables
+        run: |
+          echo "RELEASE_VERSION=${GITHUB_REF_NAME}" >> $GITHUB_ENV
+          echo "POSTGRES_VERSION=${GITHUB_REF_NAME%'.0'}" >> $GITHUB_ENV
+          echo "BUNDLE_DIR=alpine-platforms/build/tmp/buildArm32v6AlpineBundle/bundle" >> $GITHUB_ENV
+      - name: Register QEMU
+        run: docker run --rm --privileged multiarch/qemu-user-static:register --reset
+      - name: Build Bundle
+        run: ./gradlew :alpine-platforms:buildArm32v6AlpineBundle -Pversion=$RELEASE_VERSION -PpgVersion=$POSTGRES_VERSION
+      - name: Rename archive
+        run: |
+          mv ${BUNDLE_DIR}/*.txz ${BUNDLE_DIR}/embedded-postgres-binaries-linux-arm32v6-${RELEASE_VERSION}.txz
+      - name: Upload bundle
+        uses: actions/upload-artifact@v3
+        with:
+          name: buildArm32v6AlpineBundle
+          path: ${{ env.BUNDLE_DIR }}/*.txz
+  alpine-arm64v8:
+    name: Alpine - arm64v8
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 15
+      - name: Set environment variables
+        run: |
+          echo "RELEASE_VERSION=${GITHUB_REF_NAME}" >> $GITHUB_ENV
+          echo "POSTGRES_VERSION=${GITHUB_REF_NAME%'.0'}" >> $GITHUB_ENV
+          echo "BUNDLE_DIR=alpine-platforms/build/tmp/buildArm64v8AlpineBundle/bundle" >> $GITHUB_ENV
+      - name: Register QEMU
+        run: docker run --rm --privileged multiarch/qemu-user-static:register --reset
+      - name: Build Bundle
+        run: ./gradlew :alpine-platforms:buildArm64v8AlpineBundle -Pversion=$RELEASE_VERSION -PpgVersion=$POSTGRES_VERSION
+      - name: Rename archive
+        run: |
+          mv ${BUNDLE_DIR}/*.txz ${BUNDLE_DIR}/embedded-postgres-binaries-linux-arm64v8-alpine-${RELEASE_VERSION}.txz
+      - name: Upload bundle
+        uses: actions/upload-artifact@v3
+        with:
+          name: buildArm64v8AlpineBundle
+          path: ${{ env.BUNDLE_DIR }}/*.txz
+  alpine-ppc64le:
+    name: Alpine - ppc64le
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 15
+      - name: Set environment variables
+        run: |
+          echo "RELEASE_VERSION=${GITHUB_REF_NAME}" >> $GITHUB_ENV
+          echo "POSTGRES_VERSION=${GITHUB_REF_NAME%'.0'}" >> $GITHUB_ENV
+          echo "BUNDLE_DIR=alpine-platforms/build/tmp/buildPpc64leAlpineBundle/bundle" >> $GITHUB_ENV
+      - name: Register QEMU
+        run: docker run --rm --privileged multiarch/qemu-user-static:register --reset
+      - name: Build Bundle
+        run: ./gradlew :alpine-platforms:buildPpc64leAlpineBundle -Pversion=$RELEASE_VERSION -PpgVersion=$POSTGRES_VERSION
+      - name: Rename archive
+        run: |
+          mv ${BUNDLE_DIR}/*.txz ${BUNDLE_DIR}/embedded-postgres-binaries-linux-ppc64le-alpine-${RELEASE_VERSION}.txz
+      - name: Upload bundle
+        uses: actions/upload-artifact@v3
+        with:
+          name: buildPpc64leAlpineBundle
+          path: ${{ env.BUNDLE_DIR }}/*.txz
+  alpine-lite-arm32v6:
+    name: Alpine - arm32v6 (Lite)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 15
+      - name: Set environment variables
+        run: |
+          echo "RELEASE_VERSION=${GITHUB_REF_NAME}" >> $GITHUB_ENV
+          echo "POSTGRES_VERSION=${GITHUB_REF_NAME%'.0'}" >> $GITHUB_ENV
+          echo "BUNDLE_DIR=alpine-lite-platforms/build/tmp/buildArm32v6AlpineLiteBundle/bundle" >> $GITHUB_ENV
+      - name: Register QEMU
+        run: docker run --rm --privileged multiarch/qemu-user-static:register --reset
+      - name: Build Bundle
+        run: ./gradlew :alpine-lite-platforms:buildArm32v6AlpineLiteBundle -Pversion=$RELEASE_VERSION -PpgVersion=$POSTGRES_VERSION
+      - name: Rename archive
+        run: |
+          mv ${BUNDLE_DIR}/*.txz ${BUNDLE_DIR}/embedded-postgres-binaries-linux-arm32v6-alpine-lite-${RELEASE_VERSION}.txz
+      - name: Upload bundle
+        uses: actions/upload-artifact@v3
+        with:
+          name: buildArm32v6AlpineLiteBundle
+          path: ${{ env.BUNDLE_DIR }}/*.txz
+  alpine-lite-arm64v8:
+    name: Alpine - arm64v8 (Lite)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 15
+      - name: Set environment variables
+        run: |
+          echo "RELEASE_VERSION=${GITHUB_REF_NAME}" >> $GITHUB_ENV
+          echo "POSTGRES_VERSION=${GITHUB_REF_NAME%'.0'}" >> $GITHUB_ENV
+          echo "BUNDLE_DIR=alpine-lite-platforms/build/tmp/buildArm64v8AlpineLiteBundle/bundle" >> $GITHUB_ENV
+      - name: Register QEMU
+        run: docker run --rm --privileged multiarch/qemu-user-static:register --reset
+      - name: Build Bundle
+        run: ./gradlew :alpine-lite-platforms:buildArm64v8AlpineLiteBundle -Pversion=$RELEASE_VERSION -PpgVersion=$POSTGRES_VERSION
+      - name: Rename archive
+        run: |
+          mv ${BUNDLE_DIR}/*.txz ${BUNDLE_DIR}/embedded-postgres-binaries-linux-arm64v8-alpine-lite-${RELEASE_VERSION}.txz
+      - name: Upload bundle
+        uses: actions/upload-artifact@v3
+        with:
+          name: buildArm64v8AlpineLiteBundle
+          path: ${{ env.BUNDLE_DIR }}/*.txz
+  alpine-lite-ppc64le:
+    name: Alpine - ppc64le (Lite)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 15
+      - name: Set environment variables
+        run: |
+          echo "RELEASE_VERSION=${GITHUB_REF_NAME}" >> $GITHUB_ENV
+          echo "POSTGRES_VERSION=${GITHUB_REF_NAME%'.0'}" >> $GITHUB_ENV
+          echo "BUNDLE_DIR=alpine-lite-platforms/build/tmp/buildPpc64leAlpineLiteBundle/bundle" >> $GITHUB_ENV
+      - name: Register QEMU
+        run: docker run --rm --privileged multiarch/qemu-user-static:register --reset
+      - name: Build Bundle
+        run: ./gradlew :alpine-lite-platforms:buildPpc64leAlpineLiteBundle -Pversion=$RELEASE_VERSION -PpgVersion=$POSTGRES_VERSION
+      - name: Rename archive
+        run: |
+          mv ${BUNDLE_DIR}/*.txz ${BUNDLE_DIR}/embedded-postgres-binaries-linux-ppc64le-alpine-lite-${RELEASE_VERSION}.txz
+      - name: Upload bundle
+        uses: actions/upload-artifact@v3
+        with:
+          name: buildPpc64leAlpineLiteBundle
+          path: ${{ env.BUNDLE_DIR }}/*.txz
+  macos:
+    name: MacOS
+    runs-on: macos-latest
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 15
+      - name: Set environment variables
+        run: |
+          echo "RELEASE_VERSION=${GITHUB_REF_NAME}" >> $GITHUB_ENV
+          echo "POSTGRES_VERSION=${GITHUB_REF_NAME%'.0'}" >> $GITHUB_ENV
+          echo "BUNDLE_DIR=repacked-platforms/build/tmp/buildAmd64DarwinBundle/bundle" >> $GITHUB_ENV
+      - name: Build Bundle
+        run: ./gradlew :repacked-platforms:buildAmd64DarwinBundle -Pversion=$RELEASE_VERSION -PpgVersion=$POSTGRES_VERSION
+      - name: Rename archive
+        run: |
+          mv ${BUNDLE_DIR}/*.txz ${BUNDLE_DIR}/embedded-postgres-binaries-darwin-amd64-${RELEASE_VERSION}.txz
+      - name: Upload bundle
+        uses: actions/upload-artifact@v3
+        with:
+          name: buildAmd64DarwinBundle
+          path: ${{ env.BUNDLE_DIR }}/*.txz
+  windows:
+    name: Windows
+    runs-on: windows-latest
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 15
+      - name: Set environment variables
+        run: |
+          echo "RELEASE_VERSION=${GITHUB_REF_NAME}" >> $GITHUB_ENV
+          echo "POSTGRES_VERSION=${GITHUB_REF_NAME%'.0'}" >> $GITHUB_ENV
+          echo "BUNDLE_DIR=repacked-platforms/build/tmp/buildAmd64WindowsBundle/bundle" >> $GITHUB_ENV
+        shell: bash
+      - name: Install GNU Wget
+        run: choco install wget
+      - name: Update system paths
+        run: echo $PGBIN >> $GITHUB_PATH
+        shell: bash
+      - name: Build Bundle
+        run: ./gradlew :repacked-platforms:buildAmd64WindowsBundle -Pversion=$RELEASE_VERSION -PpgVersion=$POSTGRES_VERSION
+        shell: bash
+      - name: Rename archive
+        run: |
+          mv ${BUNDLE_DIR}/*.txz ${BUNDLE_DIR}/embedded-postgres-binaries-windows-amd64-${RELEASE_VERSION}.txz
+        shell: bash
+      - name: Upload bundle
+        uses: actions/upload-artifact@v3
+        with:
+          name: buildAmd64WindowsBundle
+          path: ${{ env.BUNDLE_DIR }}/*.txz
+
+  release:
+    name: Collect artifacts & Release
+    needs: [debian-amd64, alpine-amd64, alpine-lite-amd64, debian-arm32v7, debian-arm64v8, debian-ppc64le, alpine-arm32v6, alpine-arm64v8, alpine-ppc64le, alpine-lite-arm32v6, alpine-lite-arm64v8, alpine-lite-ppc64le, macos, windows]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set environment variables
+        run: |
+          echo "RELEASE_VERSION=${GITHUB_REF_NAME}" >> $GITHUB_ENV
+          echo "POSTGRES_VERSION=${GITHUB_REF_NAME%'.0'}" >> $GITHUB_ENV
+      - name: Download bundles
+        id: download
+        uses: actions/download-artifact@v3
+        with:
+          path: bundles
+      - name: Upload bundles to gh releases
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ${{steps.download.outputs.download-path}}/*/*.txz
