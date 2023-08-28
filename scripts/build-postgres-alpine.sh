@@ -151,7 +151,7 @@ $DOCKER_OPTS $IMG_NAME /bin/sh -ex -c 'echo "Starting building postgres binaries
     && cp /lib/libuuid.so.1 /lib/libz.so.1 /lib/libssl.so.1.0.0 /lib/libcrypto.so.1.0.0 /usr/lib/libxml2.so.2 /usr/lib/libxslt.so.1 ./lib \
     && if [ "$ICU_ENABLED" = true ]; then cp --no-dereference /usr/lib/libicudata.so* /usr/lib/libicuuc.so* /usr/lib/libicui18n.so* /usr/lib/libstdc++.so* /usr/lib/libgcc_s.so* ./lib; fi \
     && if [ -n "$POSTGIS_VERSION" ]; then cp --no-dereference /usr/lib/libjson-c.so* /usr/lib/libsqlite3.so* ./lib ; fi \
-    && find ./bin -type f \( -name "initdb" -o -name "pg_ctl" -o -name "pg_upgrade" -o -name "pg_dump" -o -name "pg_restore" -o -name "postgres" \) -print0 | xargs -0 -n1 chrpath -r "\$ORIGIN/../lib" \
+    && find ./bin -type f \( -name "initdb" -o -name "pg_ctl" -o -name "pg_upgrade" -o -name "pg_dump" -o -name "pg_dumpall" -o -name "pg_restore" -o -name "pg_controldata" -o -name "pg_resetwal" -o -name "vacuumdb" -o -name "psql" -o -name "postgres" \) -print0 | xargs -0 -n1 chrpath -r "\$ORIGIN/../lib" \
     && tar -cJvf /usr/local/pg-dist/postgres-linux-alpine_linux.txz --hard-dereference \
         share/postgresql \
         lib \
@@ -159,5 +159,10 @@ $DOCKER_OPTS $IMG_NAME /bin/sh -ex -c 'echo "Starting building postgres binaries
         bin/pg_ctl \
         bin/pg_upgrade \
         bin/pg_dump \
+        bin/pg_dumpall \
         bin/pg_restore \
+        bin/pg_controldata \
+        bin/pg_resetwal \
+        bin/vacuumdb \
+        bin/psql \
         bin/postgres'

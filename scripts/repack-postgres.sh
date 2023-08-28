@@ -108,7 +108,12 @@ if [ "$PLATFORM_NAME" = "darwin" ] ; then
     bin/pg_ctl \
     bin/pg_upgrade \
     bin/pg_dump \
+    bin/pg_dumpall \
     bin/pg_restore \
+    bin/pg_controldata \
+    bin/pg_resetwal \
+    bin/vacuumdb \
+    bin/psql \
     bin/postgres
 
 elif [ "$PLATFORM_NAME" = "windows" ] ; then
@@ -123,7 +128,12 @@ elif [ "$PLATFORM_NAME" = "windows" ] ; then
     bin/pg_ctl.exe \
     bin/pg_upgrade.exe \
     bin/pg_dump.exe \
+    bin/pg_dumpall.exe \
     bin/pg_restore.exe \
+    bin/pg_controldata.exe \
+    bin/pg_resetwal.exe \
+    bin/vacuumdb.exe \
+    bin/psql.exe \
     bin/postgres.exe \
     bin/*.dll
 
@@ -136,7 +146,12 @@ elif [ "$PLATFORM_NAME" = "linux" ] ; then
     bin/pg_ctl \
     bin/pg_upgrade \
     bin/pg_dump \
+    bin/pg_dumpall \
     bin/pg_restore \
+    bin/pg_controldata \
+    bin/pg_resetwal \
+    bin/vacuumdb \
+    bin/psql \
     bin/postgres
 
 fi

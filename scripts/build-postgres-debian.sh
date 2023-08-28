@@ -145,7 +145,7 @@ $DOCKER_OPTS $IMG_NAME /bin/bash -ex -c 'echo "Starting building postgres binari
     && cp /lib/*/libssl.so.1* /lib/*/libcrypto.so.1* ./lib || cp /usr/lib/*/libssl.so.1* /usr/lib/*/libcrypto.so.1* ./lib \
     && if [ "$ICU_ENABLED" = true ]; then cp --no-dereference /usr/lib/*/libicudata.so* /usr/lib/*/libicuuc.so* /usr/lib/*/libicui18n.so* ./lib; fi \
     && if [ -n "$POSTGIS_VERSION" ]; then cp --no-dereference /lib/*/libjson-c.so* /usr/lib/*/libsqlite3.so* ./lib ; fi \
-    && find ./bin -type f \( -name "initdb" -o -name "pg_ctl" -o -name "pg_upgrade" -o -name "pg_dump" -o -name "pg_restore" -o -name "postgres" \) -print0 | xargs -0 -n1 patchelf --set-rpath "\$ORIGIN/../lib" \
+    && find ./bin -type f \( -name "initdb" -o -name "pg_ctl" -o -name "pg_upgrade" -o -name "pg_dump" -o -name "pg_dumpall" -o -name "pg_restore" -o -name "pg_controldata" -o -name "pg_resetwal" -o -name "vacuumdb" -o -name "psql" -o -name "postgres" \) -print0 | xargs -0 -n1 patchelf --set-rpath "\$ORIGIN/../lib" \
     && find ./lib -maxdepth 1 -type f -name "*.so*" -print0 | xargs -0 -n1 patchelf --set-rpath "\$ORIGIN" \
     && find ./lib/postgresql -maxdepth 1 -type f -name "*.so*" -print0 | xargs -0 -n1 patchelf --set-rpath "\$ORIGIN/.." \
     && tar -cJvf /usr/local/pg-dist/postgres-linux-debian.txz --hard-dereference \
@@ -155,5 +155,10 @@ $DOCKER_OPTS $IMG_NAME /bin/bash -ex -c 'echo "Starting building postgres binari
         bin/pg_ctl \
         bin/pg_upgrade \
         bin/pg_dump \
+        bin/pg_dumpall \
         bin/pg_restore \
+        bin/pg_controldata \
+        bin/pg_resetwal \
+        bin/vacuumdb \
+        bin/psql \
         bin/postgres'
