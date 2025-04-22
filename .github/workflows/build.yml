@@ -2,7 +2,7 @@ name: Build
 on:
   push:
     tags:
-      - '[0-9]+.[0-9]+.[0-9]+'
+      - "[0-9]+.[0-9]+.[0-9]+"
 jobs:
   debian-amd64:
     name: Debian - amd64
@@ -13,7 +13,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'zulu'
+          distribution: "zulu"
           java-version: 15
       - name: Set environment variables
         run: |
@@ -39,7 +39,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'zulu'
+          distribution: "zulu"
           java-version: 15
       - name: Set environment variables
         run: |
@@ -59,13 +59,14 @@ jobs:
   alpine-lite-amd64:
     name: Alpine - amd64 (Lite)
     runs-on: ubuntu-latest
+    if: ${{ startsWith(github.ref_name, '10.') || startsWith(github.ref_name, '11.') || startsWith(github.ref_name, '12.') || startsWith(github.ref_name, '13.') || startsWith(github.ref_name, '14.') || startsWith(github.ref_name, '15.') }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'zulu'
+          distribution: "zulu"
           java-version: 15
       - name: Set environment variables
         run: |
@@ -73,14 +74,14 @@ jobs:
           echo "POSTGRES_VERSION=${GITHUB_REF_NAME%'.0'}" >> $GITHUB_ENV
           echo "BUNDLE_DIR=alpine-lite-platforms/build/tmp/buildAmd64AlpineLiteBundle/bundle" >> $GITHUB_ENV
       - name: Build Bundle
-        run: ./gradlew :alpine-lite-platforms:buildAmd64AlpineBundle -Pversion=$RELEASE_VERSION -PpgVersion=$POSTGRES_VERSION
+        run: ./gradlew :alpine-lite-platforms:buildAmd64AlpineLiteBundle -Pversion=$RELEASE_VERSION -PpgVersion=$POSTGRES_VERSION
       - name: Rename archive
         run: |
           mv ${BUNDLE_DIR}/*.txz ${BUNDLE_DIR}/embedded-postgres-binaries-linux-amd64-alpine-lite-${RELEASE_VERSION}.txz
       - name: Upload bundle
         uses: actions/upload-artifact@v4
         with:
-          name: buildAmd64AlpineBundle
+          name: buildAmd64AlpineLiteBundle
           path: ${{ env.BUNDLE_DIR }}/*.txz
   debian-arm32v7:
     name: Debian - arm32v7
@@ -91,7 +92,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'zulu'
+          distribution: "zulu"
           java-version: 15
       - name: Set environment variables
         run: |
@@ -119,7 +120,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'zulu'
+          distribution: "zulu"
           java-version: 15
       - name: Set environment variables
         run: |
@@ -147,7 +148,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'zulu'
+          distribution: "zulu"
           java-version: 15
       - name: Set environment variables
         run: |
@@ -175,7 +176,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'zulu'
+          distribution: "zulu"
           java-version: 15
       - name: Set environment variables
         run: |
@@ -203,7 +204,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'zulu'
+          distribution: "zulu"
           java-version: 15
       - name: Set environment variables
         run: |
@@ -231,7 +232,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'zulu'
+          distribution: "zulu"
           java-version: 15
       - name: Set environment variables
         run: |
@@ -253,13 +254,14 @@ jobs:
   alpine-lite-arm32v6:
     name: Alpine - arm32v6 (Lite)
     runs-on: ubuntu-latest
+    if: ${{ startsWith(github.ref_name, '10.') || startsWith(github.ref_name, '11.') || startsWith(github.ref_name, '12.') || startsWith(github.ref_name, '13.') || startsWith(github.ref_name, '14.') || startsWith(github.ref_name, '15.') }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'zulu'
+          distribution: "zulu"
           java-version: 15
       - name: Set environment variables
         run: |
@@ -281,13 +283,14 @@ jobs:
   alpine-lite-arm64v8:
     name: Alpine - arm64v8 (Lite)
     runs-on: ubuntu-latest
+    if: ${{ startsWith(github.ref_name, '10.') || startsWith(github.ref_name, '11.') || startsWith(github.ref_name, '12.') || startsWith(github.ref_name, '13.') || startsWith(github.ref_name, '14.') || startsWith(github.ref_name, '15.') }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'zulu'
+          distribution: "zulu"
           java-version: 15
       - name: Set environment variables
         run: |
@@ -309,13 +312,14 @@ jobs:
   alpine-lite-ppc64le:
     name: Alpine - ppc64le (Lite)
     runs-on: ubuntu-latest
+    if: ${{ startsWith(github.ref_name, '10.') || startsWith(github.ref_name, '11.') || startsWith(github.ref_name, '12.') || startsWith(github.ref_name, '13.') || startsWith(github.ref_name, '14.') || startsWith(github.ref_name, '15.') }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'zulu'
+          distribution: "zulu"
           java-version: 15
       - name: Set environment variables
         run: |
@@ -343,7 +347,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'zulu'
+          distribution: "zulu"
           java-version: 15
       - name: Set environment variables
         run: |
@@ -369,7 +373,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'zulu'
+          distribution: "zulu"
           java-version: 15
       - name: Set environment variables
         run: |
@@ -397,7 +401,22 @@ jobs:
 
   release:
     name: Collect artifacts & Release
-    needs: [debian-amd64, alpine-amd64, alpine-lite-amd64, debian-arm32v7, debian-arm64v8, debian-ppc64le, alpine-arm32v6, alpine-arm64v8, alpine-ppc64le, alpine-lite-arm32v6, alpine-lite-arm64v8, alpine-lite-ppc64le, macos, windows]
+    needs:
+      - debian-amd64
+      - alpine-amd64
+      - alpine-lite-amd64
+      - debian-arm32v7
+      - debian-arm64v8
+      - debian-ppc64le
+      - alpine-arm32v6
+      - alpine-arm64v8
+      - alpine-ppc64le
+      - alpine-lite-arm32v6
+      - alpine-lite-arm64v8
+      - alpine-lite-ppc64le
+      - macos
+      - windows
+    if: ${{ always() && ( needs.alpine-lite-amd64.result != 'failure' &&  needs.alpine-lite-arm32v6.result != 'failure' &&  needs.alpine-lite-arm64v8.result != 'failure' &&  needs.alpine-lite-ppc64le.result != 'failure' ) }}
     runs-on: ubuntu-latest
     steps:
       - name: Set environment variables
@@ -406,7 +425,7 @@ jobs:
           echo "POSTGRES_VERSION=${GITHUB_REF_NAME%'.0'}" >> $GITHUB_ENV
       - name: Download bundles
         id: download
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           path: bundles
       - name: Upload bundles to gh releases
