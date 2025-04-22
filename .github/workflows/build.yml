@@ -26,7 +26,7 @@ jobs:
         run: |
           mv ${BUNDLE_DIR}/*.txz ${BUNDLE_DIR}/embedded-postgres-binaries-linux-amd64-${RELEASE_VERSION}.txz
       - name: Upload bundle
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: buildAmd64DebianBundle
           path: ${{ env.BUNDLE_DIR }}/*.txz
@@ -52,7 +52,7 @@ jobs:
         run: |
           mv ${BUNDLE_DIR}/*.txz ${BUNDLE_DIR}/embedded-postgres-binaries-linux-amd64-alpine-${RELEASE_VERSION}.txz
       - name: Upload bundle
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: buildAmd64AlpineBundle
           path: ${{ env.BUNDLE_DIR }}/*.txz
@@ -78,7 +78,7 @@ jobs:
         run: |
           mv ${BUNDLE_DIR}/*.txz ${BUNDLE_DIR}/embedded-postgres-binaries-linux-amd64-alpine-lite-${RELEASE_VERSION}.txz
       - name: Upload bundle
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: buildAmd64AlpineBundle
           path: ${{ env.BUNDLE_DIR }}/*.txz
@@ -106,7 +106,7 @@ jobs:
         run: |
           mv ${BUNDLE_DIR}/*.txz ${BUNDLE_DIR}/embedded-postgres-binaries-linux-arm32v7-${RELEASE_VERSION}.txz
       - name: Upload bundle
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: buildArm32v7DebianBundle
           path: ${{ env.BUNDLE_DIR }}/*.txz
@@ -134,7 +134,7 @@ jobs:
         run: |
           mv ${BUNDLE_DIR}/*.txz ${BUNDLE_DIR}/embedded-postgres-binaries-linux-arm64v8-${RELEASE_VERSION}.txz
       - name: Upload bundle
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: buildArm64v8DebianBundle
           path: ${{ env.BUNDLE_DIR }}/*.txz
@@ -162,7 +162,7 @@ jobs:
         run: |
           mv ${BUNDLE_DIR}/*.txz ${BUNDLE_DIR}/embedded-postgres-binaries-linux-ppc64le-${RELEASE_VERSION}.txz
       - name: Upload bundle
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: buildPpc64leDebianBundle
           path: ${{ env.BUNDLE_DIR }}/*.txz
@@ -190,7 +190,7 @@ jobs:
         run: |
           mv ${BUNDLE_DIR}/*.txz ${BUNDLE_DIR}/embedded-postgres-binaries-linux-arm32v6-${RELEASE_VERSION}.txz
       - name: Upload bundle
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: buildArm32v6AlpineBundle
           path: ${{ env.BUNDLE_DIR }}/*.txz
@@ -218,7 +218,7 @@ jobs:
         run: |
           mv ${BUNDLE_DIR}/*.txz ${BUNDLE_DIR}/embedded-postgres-binaries-linux-arm64v8-alpine-${RELEASE_VERSION}.txz
       - name: Upload bundle
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: buildArm64v8AlpineBundle
           path: ${{ env.BUNDLE_DIR }}/*.txz
@@ -246,7 +246,7 @@ jobs:
         run: |
           mv ${BUNDLE_DIR}/*.txz ${BUNDLE_DIR}/embedded-postgres-binaries-linux-ppc64le-alpine-${RELEASE_VERSION}.txz
       - name: Upload bundle
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: buildPpc64leAlpineBundle
           path: ${{ env.BUNDLE_DIR }}/*.txz
@@ -274,7 +274,7 @@ jobs:
         run: |
           mv ${BUNDLE_DIR}/*.txz ${BUNDLE_DIR}/embedded-postgres-binaries-linux-arm32v6-alpine-lite-${RELEASE_VERSION}.txz
       - name: Upload bundle
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: buildArm32v6AlpineLiteBundle
           path: ${{ env.BUNDLE_DIR }}/*.txz
@@ -302,7 +302,7 @@ jobs:
         run: |
           mv ${BUNDLE_DIR}/*.txz ${BUNDLE_DIR}/embedded-postgres-binaries-linux-arm64v8-alpine-lite-${RELEASE_VERSION}.txz
       - name: Upload bundle
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: buildArm64v8AlpineLiteBundle
           path: ${{ env.BUNDLE_DIR }}/*.txz
@@ -330,7 +330,7 @@ jobs:
         run: |
           mv ${BUNDLE_DIR}/*.txz ${BUNDLE_DIR}/embedded-postgres-binaries-linux-ppc64le-alpine-lite-${RELEASE_VERSION}.txz
       - name: Upload bundle
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: buildPpc64leAlpineLiteBundle
           path: ${{ env.BUNDLE_DIR }}/*.txz
@@ -356,7 +356,7 @@ jobs:
         run: |
           mv ${BUNDLE_DIR}/*.txz ${BUNDLE_DIR}/embedded-postgres-binaries-darwin-amd64-${RELEASE_VERSION}.txz
       - name: Upload bundle
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: buildAmd64DarwinBundle
           path: ${{ env.BUNDLE_DIR }}/*.txz
@@ -390,7 +390,7 @@ jobs:
           mv ${BUNDLE_DIR}/*.txz ${BUNDLE_DIR}/embedded-postgres-binaries-windows-amd64-${RELEASE_VERSION}.txz
         shell: bash
       - name: Upload bundle
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: buildAmd64WindowsBundle
           path: ${{ env.BUNDLE_DIR }}/*.txz
